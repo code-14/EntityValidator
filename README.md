@@ -55,7 +55,7 @@ docker run docker-django-v0.0
 
 *The following are the 4 main steps in this assignment:
 
-#1. POST API to validate a slot with a finite set of values.
+### 1. POST API to validate a slot with a finite set of values.
 *Sample Request:
 ```
 {
@@ -240,7 +240,7 @@ def validate_finite_values_entity(values: List[Dict], supported_values: List[str
     }
 }
 ```
-#2. POST API to validate a slot with a numeric value extracted and constraints on the value extracted.
+### 2. POST API to validate a slot with a numeric value extracted and constraints on the value extracted.
 *Sample Request:
 
 
@@ -395,7 +395,7 @@ def validate_numeric_entity(values: List[Dict], invalid_trigger: str = None, key
     "parameters": <params dict from func>
 }
 ```
-#3. Creating a Dockerfile
+### 3. Creating a Dockerfile
 *Once the Django app is complete. Create a Dockerfile which will be used to build a Docker image where your Django app will reside.
 
 
@@ -408,7 +408,7 @@ def validate_numeric_entity(values: List[Dict], invalid_trigger: str = None, key
 
 
 
-#4. Hosting the code on GitHub and sharing the same
+### 4. Hosting the code on GitHub and sharing the same
 *Please host the code written by you in a private GitHub repo and share the same.
 *Please state the Docker image size in the README of the repo.
 
