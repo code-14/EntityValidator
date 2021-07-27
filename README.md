@@ -15,48 +15,48 @@ docker run docker-django-v0.0
 ```
 
 
-############   Assignment   ############
-Assignment
-#Terminology
-#Utterance
-Anything the user says.
-
-
-
-For example, if a user says “I am 22 years old and I only have my college ID. Can I do a room booking?", the entire sentence is the utterance.
-
-#Intent
-An intent is the user’s intention.
-
-
-
-For example, if a user says “Can I do a room booking ?”, the user’s intent is to ask their eligibility to book a room at a hotel. Intents are given a name, often a verb and a noun, such as room_booking_eligibility.
-
-#Entity/Slot
-An entity modifies an intent.
-
-
-
-For example, if a user says “I am 22 years old and I only have my college ID”, the entities are “22 years old” and “college ID" i.e. age=22, govt_id=college. Entities are given a name, such as age and govt_id.
-
-
-
-Entities are also referred to as slots.
-
-
-
-NOTE: An intent may have multiple slots in it.
-
 #Assignment
-Create a Django app which has 2 REST APIs.
-This Django app must then be runnable via Docker.
+*Assignment
+*Terminology
+*Utterance
+*Anything the user says.
 
 
 
-The following are the 4 main steps in this assignment:
+*For example, if a user says “I am 22 years old and I only have my college ID. Can I do a room booking?", the entire sentence is the utterance.
+
+*Intent
+*An intent is the user’s intention.
+
+
+
+*For example, if a user says “Can I do a room booking ?”, the user’s intent is to ask their eligibility to book a room at a hotel. Intents are given a name, often a verb and a noun, such as room_booking_eligibility.
+
+*Entity/Slot
+*An entity modifies an intent.
+
+
+
+*For example, if a user says “I am 22 years old and I only have my college ID”, the entities are “22 years old” and “college ID" i.e. age=22, govt_id=college. Entities are given a name, such as age and govt_id.
+
+
+
+*Entities are also referred to as slots.
+
+
+
+*NOTE: An intent may have multiple slots in it.
+
+*Assignment
+*Create a Django app which has 2 REST APIs.
+*This Django app must then be runnable via Docker.
+
+
+
+*The following are the 4 main steps in this assignment:
 
 #1. POST API to validate a slot with a finite set of values.
-Sample Request:
+*Sample Request:
 ```
 {
   "invalid_trigger": "invalid_ids_stated",
@@ -88,7 +88,7 @@ Sample Request:
 }
 
 ```
-Sample Response based on sample request:
+*Sample Response based on sample request:
 
 
 ```
@@ -102,12 +102,12 @@ Sample Response based on sample request:
 }
 ```
 
-Please refer to the func docstring below to get a better understanding of the incoming payload's JSON schema keys' meanings.  The input will be in this format exactly. The data referenced in the keys of the JSON will differ when testing your code.  Please try to keep your func as generic as possible. Tie it to the data at your own peril :)
+*Please refer to the func docstring below to get a better understanding of the incoming payload's JSON schema keys' meanings.  The input will be in this format exactly. The data referenced in the keys of the JSON will differ when testing your code.  Please try to keep your func as generic as possible. Tie it to the data at your own peril :)
 
 
 
-Use this JSON as input for the following function:
-
+*Use this JSON as input for the following function:
+```
 from typing import List, Dict, Callable, Tuple
 SlotValidationResult = Tuple[bool, bool, str, Dict]
 
@@ -127,22 +127,22 @@ def validate_finite_values_entity(values: List[Dict], supported_values: List[str
     :return: a tuple of (filled, partially_filled, trigger, params)
     """
     ...
+```
 
-
-filled : True if all values are valid
-
-
-
-partially_filled:
-
-True when a subset of values are valid
-
-True when there are values and none of them are valid
-
-Expected results based on sample request for the function validate_finite_values_entity:
+*filled : True if all values are valid
 
 
 
+*partially_filled:
+
+*True when a subset of values are valid
+
+*True when there are values and none of them are valid
+
+*Expected results based on sample request for the function validate_finite_values_entity:
+
+
+```
 +--------------------------+--------------------------------------+
 | Values Array             | Result                               |
 +--------------------------+--------------------------------------+
@@ -188,49 +188,49 @@ Expected results based on sample request for the function validate_finite_values
 | ]                        |                                      |
 +--------------------------+--------------------------------------+
 
+```
+
+
+*If pick_first is true in the sample request, the ids_stated in params must be a string instead of a list.
 
 
 
-If pick_first is true in the sample request, the ids_stated in params must be a string instead of a list.
+*If support_multiple is true in the sample request, the ids_stated must be a list of supported IDs passed in the values list.
 
 
 
-If support_multiple is true in the sample request, the ids_stated must be a list of supported IDs passed in the values list.
+*This function's result should be wrapped by the Django view and the POST API's response should be in the format:
 
 
-
-This function's result should be wrapped by the Django view and the POST API's response should be in the format:
-
-
-
+```
 {
     "filled": <filled flag>,
     "partially_filled": <partially filled flag>,
     "trigger": <trigger value>,
     "parameters": <params dict from func>
 }
+```
 
+*Example:
+*If values is
 
-Example:
-If values is
-
-
+```
 
 {
     "entity_type": "id",
     "value": "college"
 }
+```
 
-
-key is ids_stated, support_multiple is true
-and "college" exists in the supported_values list,
-
-
-
-then the response should be
+*key is ids_stated, support_multiple is true
+*and "college" exists in the supported_values list,
 
 
 
+*then the response should be
+
+
+```
 {
     "filled": true,
     "partially_filled": false,
@@ -239,8 +239,9 @@ then the response should be
         "ids_stated": ["COLLEGE"]
     }
 }
+```
 #2. POST API to validate a slot with a numeric value extracted and constraints on the value extracted.
-Sample Request:
+*Sample Request:
 
 
 ```
@@ -265,11 +266,11 @@ Sample Request:
 }
 
 ```
-The constraint expression will follow python syntax.
+*The constraint expression will follow python syntax.
 
 
 
-Sample Response based on sample request:
+*Sample Response based on sample request:
 ```
 {
     "filled": true,
@@ -281,10 +282,10 @@ Sample Response based on sample request:
 }
 ```
 
-Use this JSON as input for the following function:
+*Use this JSON as input for the following function:
 
 
-
+```
 from typing import List, Dict, Callable
 SlotValidationResult = Tuple[bool, bool, str, Dict]
 
@@ -314,23 +315,23 @@ def validate_numeric_entity(values: List[Dict], invalid_trigger: str = None, key
     """
     ...
 
-
-filled : True if all values are valid
-
-
-
-partially_filled:
-
-True when a subset of values are valid
-
-True when there are values and none of them are valid
+```
+*filled : True if all values are valid
 
 
 
-Expected Results for the validate_numeric_entity function based on the sample input:
+*partially_filled:
+
+*True when a subset of values are valid
+
+*True when there are values and none of them are valid
 
 
 
+*Expected Results for the validate_numeric_entity function based on the sample input:
+
+
+```
 +------------------------------+------------------------+
 | Values Array                 | Result                 |
 +------------------------------+------------------------+
@@ -375,55 +376,56 @@ Expected Results for the validate_numeric_entity function based on the sample in
 |   }                          |                        |
 | ]                            |                        |
 +------------------------------+------------------------+
+```
 
 
 
-
-If pick_first is true, the age_stated in params must be an integer instead of a list. If support_multiple is true, the age_stated must be a list of valid ages passed in the values.
-
-
-
-This function's result should be wrapped by the Django view and the POST API's response should be in the form:
+*If pick_first is true, the age_stated in params must be an integer instead of a list. If support_multiple is true, the age_stated must be a list of valid ages passed in the values.
 
 
 
+*This function's result should be wrapped by the Django view and the POST API's response should be in the form:
+
+
+```
 {
     "filled": <filled flag>,
     "partially_filled": <partially filled flag>,
     "trigger": <trigger value>,
     "parameters": <params dict from func>
 }
+```
 #3. Creating a Dockerfile
-Once the Django app is complete. Create a Dockerfile which will be used to build a Docker image where your Django app will reside.
+*Once the Django app is complete. Create a Dockerfile which will be used to build a Docker image where your Django app will reside.
 
 
 
-Try to ensure that the dockerfile is as small as possible.
+*Try to ensure that the dockerfile is as small as possible.
 
 
 
-Please also share the command required to start your docker container and run your Django app once the Docker image is built.
+*Please also share the command required to start your docker container and run your Django app once the Docker image is built.
 
 
 
 #4. Hosting the code on GitHub and sharing the same
-Please host the code written by you in a private GitHub repo and share the same.
-Please state the Docker image size in the README of the repo.
+*Please host the code written by you in a private GitHub repo and share the same.
+*Please state the Docker image size in the README of the repo.
 
 
 
-Please host the code written by you in a private github repo and share the same. Please state the docker image size in the README of the repo.
+*Please host the code written by you in a private github repo and share the same. Please state the docker image size in the README of the repo.
 
 
 
-Add the following as contributors to the repo:
+*Add the following as contributors to the repo:
 
-VaiAutomation
+*VaiAutomation
 
-vipul-sharma20
+*vipul-sharma20
 
-muku2211
+*muku2211
 
-DebPaine
+*DebPaine
 
-dimplemathewkc
+*dimplemathewkc
