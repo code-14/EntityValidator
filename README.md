@@ -1,5 +1,5 @@
 # EntityValidator
-# Instructions to run the App in Docker
+## Instructions to run the App in Docker
 
 *Build the image: 
 ```
