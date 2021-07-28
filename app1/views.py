@@ -45,3 +45,20 @@ def validate_numeric_entity(request):
 
     response = Response(result, status=status.HTTP_200_OK)
     return response
+
+
+@api_view(['GET', 'POST'])
+def entity_parse_and_validate(request):
+    if request.method == 'GET':
+        return Response({"message": "Validating entity"})
+
+    data = request.data
+    try:
+        t = entity_parse_and_validate(data)
+    except:
+        error = "Bad request!!"
+        traceback.print_exc()
+        return Response(error, status=status.HTTP_400_BAD_REQUEST)
+
+    response = Response(t, status=status.HTTP_200_OK)
+    return response
