@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('validate-finite-values-entity', views.validate_finite_values_entity),
     path('validate-numeric-entity', views.validate_numeric_entity),
+    path('entity-validation', views.entity_parse_and_validate),
     path('', views.welcomePage)
 
 ]
