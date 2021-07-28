@@ -182,3 +182,55 @@ def validate_numeric_entity(values: List[Dict], invalid_trigger: str = None, key
 
     output['parameters'] = parameters
     return output
+
+
+def entity_parse_and_validate(data):
+
+    output = collections.OrderedDict()
+    output["intents_info"] = {
+            "name": data["intents_info"]["name"], "slots": []}
+    output["parameters"] = []
+    output["slots_filled"] = []
+    output["trigger"] = ""
+    slots_input = data["intents_info"]["slots"]
+    mapper = {"finite_values_entity": wrapper_validate_finite_values_entity,
+                            "numeric_values_entity": wrapper_validate_numeric_entity}
+
+    # mapping the validation parser
+    for slot in slots_input:
+        validate = slot["validation_parser"]
+    validate_func = mapper[validate]
+
+    result = validate_func(slot)
+
+    tslot = {"name": slot["name"], "filled": result["filled"],
+                    "partially_filled": result["partially_filled"]}
+
+    output["intents_info"]["slots"].append(tslot)
+    output["parameters"].append(result["parameters"])
+    output["slots_filled"].append(slot["name"])
+
+    # creating new slots filled
+    newslots_filled = []
+    for i in range(len(output["intents_info"])):
+        res = output["intents_info"][i]
+        if not res["filled"]:
+            output["trigger"] = output["trigger"] + \
+                    "_" + output["slots_filled"][i]
+        continue
+        newslots_filled.append(output["slots_filled"][i])
+
+    output["slots_filled"] = newslots_filled
+    # creating new parameters
+    new_parameters = {}
+    for i in range(len(output["parameters"])):
+        if len(output["parameters"][i]) > 0:
+            li = tuple(output["parameters"][i].items())
+        print(li)
+        new_parameters[li[0][0]] = li[0][1]
+    # returning result
+    output["parameters"] = new_parameters
+    output["trigger"] = "_" + output["intents_info"]["name"] + \
+            "_collect_" + output["trigger"] + "_"
+    finalResult = tuple([output["intents_info"], output["parameters"], output["slots_filled"], output["trigger"])
+    return result
